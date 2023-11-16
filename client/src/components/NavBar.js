@@ -26,7 +26,7 @@ const NavBar = observer(() => {
                             className="m-lg-1"
                             onClick={() => navigate(LOGIN_ROUTE)}
                         >
-                            Войти
+                            Выйти
                         </Button>
                     </Nav>
                     :
