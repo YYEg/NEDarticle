@@ -1,24 +1,37 @@
 import React, {useContext} from 'react';
 import {Context} from "../index";
-import {Container, Nav, Navbar} from "react-bootstrap";
-import {NavLink} from "react-router-dom";
-import {SHOP_ROUTE} from "../utils/consts";
+import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
+import {useNavigate} from "react-router-dom"
+import {ADMIN_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 
 const NavBar = observer(() => {
+    const navigate = useNavigate()
     const {user} = useContext(Context)
     return (
         <Navbar bg="dark" data-bs-theme="dark">
             <Container>
-                <NavLink style={{color:'white'}} to={SHOP_ROUTE}>Электрон</NavLink>
+                <Nav.Link style={{color:'white'}} href={'/'}>Электрон</Nav.Link>
                 {user.isAuth ?
                     <Nav className="ml-auto" style={{color: 'white'}}>
-                        <button variant={"outline-light" } className="m-md-3">Админ панель</button>
-                        <button variant={"outline-light"} className="m-md-3">Войти</button>
+                        <Button
+                            variant={"outline-light"}
+                            className="m-lg-1"
+                            onClick={() => navigate(ADMIN_ROUTE)}
+                        >
+                            Админ панель
+                        </Button>
+                        <Button
+                            variant={"outline-light"}
+                            className="m-lg-1"
+                            onClick={() => navigate(LOGIN_ROUTE)}
+                        >
+                            Войти
+                        </Button>
                     </Nav>
                     :
                     <Nav className="ml-auto" style={{color: 'white'}}>
-                        <button variant={"outline-light"} onClick={() => user.setIsAuth(true)}>Авторизация</button>
+                        <Button variant={"outline-light"} onClick={() => user.setIsAuth(true)}>Авторизация</Button>
                     </Nav>
                 }
             </Container>
