@@ -27,7 +27,19 @@ const Auth = observer(() => {
             user.setIsAuth(true)
             navigate(SHOP_ROUTE)
         } catch (e) {
-            alert(e.response.data.message)
+            if (e.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                alert(e.response.data.message);
+            } else if (e.request) {
+                // The request was made but no response was received
+                // `e.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                alert("Request made but no response received, your internet might be down or the server is offline.");
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                alert("Error", e.message);
+            }
         }
     }
     return (
