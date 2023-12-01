@@ -8,9 +8,8 @@ import {
     ADMIN_ROUTE,
     CART_ROUTE,
     DEVICE_ROUTE,
-    DEVICE_SHOP,
     LOGIN_ROUTE,
-    REGISTRATION_ROTE, REGISTRATION_ROUTE,
+    REGISTRATION_ROUTE,
     SHOP_ROUTE
 } from "./utils/consts";
 
@@ -42,5 +41,9 @@ export const publicRoutes = [
     {
         path: DEVICE_ROUTE + '/:id',
         Component: DevicePage
+    },
+    {
+        path: CART_ROUTE,
+        Component: Cart
     }
 ]
