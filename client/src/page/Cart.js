@@ -11,14 +11,10 @@ import {observer} from "mobx-react-lite";
 const Cart = observer(() => {
     return (
         <Container>
+            <div className="text-xxl-center text-bg-dark m-2">Cart</div>
             <Row className="mt-3">
-                <Col  md={3}>
-                    <TypeBar/>
-                </Col>
-                <Col  md={9}>
-                    <BrandBar/>
+                <Col  md={12}>
                     <DeviceList/>
-                    <Pages/>
                 </Col>
             </Row>
         </Container>

@@ -3,7 +3,7 @@ import {Context} from "../index";
 import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import {useNavigate} from "react-router-dom"
-import {ADMIN_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {ADMIN_ROUTE, CART_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 
 const NavBar = observer(() => {
     const navigate = useNavigate()
@@ -19,6 +19,13 @@ const NavBar = observer(() => {
                 <Nav.Link style={{color:'white'}} href={'/'}>Электрон</Nav.Link>
                 {user.isAuth ?
                     <Nav className="ml-auto" style={{color: 'white'}}>
+                        <Button
+                            variant={"outline-light"}
+                            className="m-lg-1"
+                            onClick={() => navigate(CART_ROUTE)}
+                        >
+                            Корзина
+                        </Button>
                         <Button
                             variant={"outline-light"}
                             className="m-lg-1"
