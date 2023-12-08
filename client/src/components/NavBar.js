@@ -22,7 +22,7 @@ const NavBar = observer(() => {
                     <Image width={108} height={40} src={elogo}/>
                 </Nav.Link>
                 {user.isAuth ?
-                    <Nav style={{color: 'white'}}>
+                    <Nav className="me-auto">
                         <Button
                             variant={"outline-primary"}
                             className="m-lg-1"
@@ -39,7 +39,7 @@ const NavBar = observer(() => {
                         </Button>
                     </Nav>
                     :
-                    <Nav style={{color: 'white'}}>
+                    <Nav className="me-auto">
                         <Button variant={"outline-primary"} onClick={() => navigate(LOGIN_ROUTE)}>Авторизация</Button>
                     </Nav>
                 }

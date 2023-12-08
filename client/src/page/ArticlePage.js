@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, Container, Image} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import bigStar from "../assets/bigStar.png"
+import elogo from "../assets/elogo.png"
 import {useParams} from "react-router-dom";
 import {fetchOneArticle} from "../http/ArticleAPI";
 
@@ -16,15 +16,18 @@ const ArticlePage = () => {
     return (
         <Container className="mt-3">
             <Row>
-                <Col md={6}>
+                <Col md={4}>
                     <Image width={300} height={300} src={process.env.REACT_APP_API_URL + article.img}/>
                 </Col>
-                <Col md={6}>
+                <Col md={4}>
+                    <img src={elogo} alt=""/>
+                </Col>
+                <Col md={4}>
                     <Card
                         className="d-flex flex-column align-items-center justify-content-around"
                         style={{width: 300, height: 300, fontSize: 32, border: '5px solid lightgray'}}
                     >
-                        <h3>От: {article.author}</h3>
+                        <h3>Автор(ы):  {article.author}</h3>
                     </Card>
                 </Col>
             </Row>

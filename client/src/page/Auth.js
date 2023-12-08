@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import {login, registration} from "../http/userAPI";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
+import Col from "react-bootstrap/Col";
 
 const Auth = observer(() => {
     const {user} = useContext(Context)
@@ -14,6 +15,7 @@ const Auth = observer(() => {
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
 
     const click = async () => {
         try {
@@ -67,21 +69,23 @@ const Auth = observer(() => {
                     </Form>
                     <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
                         {isLogin ? (
-                            <div>
+                            <Col md={12}>
                                 Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйтесь</NavLink>
-                            </div>
+                            </Col>
                         ) : (
-                            <div>
+                            <Col md={12}>
                                 Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите</NavLink>
-                            </div>
+                            </Col>
                         )}
-                        <Button
-                            variant="outline-success"
-                            onClick={click}
-                        >
-                            {isLogin ? 'Войти' : 'Зарегистрироваться'}
-                        </Button>
-                    </Row>
+                        <Col md={12} className="mt-3">
+                            <Button
+                                variant="outline-success"
+                                onClick={click}
+                            >
+                                {isLogin ? 'Войти' : 'Зарегистрироваться'}
+                            </Button>
+                        </Col>
+                </Row>
                 </Container>
             </Card>
         </Container>

@@ -46,6 +46,16 @@ class UserController {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
         return res.json({token})
     }
+
+    async checkRole(req, res, next){
+        const user = req.user; // Assuming req.user contains the user details
+        if(user.role === 'ADMIN'){
+            console.log(user.role)
+            res.json({isAdmin: true}); // Return true if the user is an admin
+        } else {
+            res.json({isAdmin: false}); // Return false if the user is not an admin
+        }
+    }
 }
 
 module.exports = new UserController()
