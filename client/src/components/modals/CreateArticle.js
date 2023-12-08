@@ -4,20 +4,21 @@ import {useContext} from "react";
 import {Context} from "../../index";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {createDevice, fetchBrand, fetchDevices, fetchType} from "../../http/DeviceAPI";
+import {createArticle, fetchYear, fetchArticle, fetchType} from "../../http/ArticleAPI";
 import {observer} from "mobx-react-lite";
 
-const CreateDevice = observer(({show, onHide}) => {
-    const {device} = useContext(Context)
+const CreateArticle = observer(({show, onHide}) => {
+    const {article} = useContext(Context)
 
     const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
+    const [author, setAuthor] = useState('')
+    const [text, setText] = useState('')
     const [file, setFile] = useState(null)
     const [info, setInfo] = useState([])
 
     useEffect(() => {
-        fetchType().then(data => device.setTypes(data))
-        fetchBrand().then(data => device.setBrands(data))
+        fetchType().then(data => article.setTypes(data))
+        fetchYear().then(data => article.setYears(data))
     }, [])
 
     const addInfo = () => {
@@ -39,12 +40,13 @@ const CreateDevice = observer(({show, onHide}) => {
     const addDevice = () => {
         const formData = new FormData()
         formData.append('name', name)
-        formData.append('price', `${price}`)
+        formData.append('author', author)
         formData.append('img', file)
-        formData.append('brandId', device.selectedBrand.id)
-        formData.append('typeId', device.selectedType.id)
+        formData.append('text', text)
+        formData.append('yearId', article.selectedYear.id)
+        formData.append('typeId', article.selectedType.id)
         formData.append('info', JSON.stringify(info))
-        createDevice(formData).then(data => onHide())
+        createArticle(formData).then(data => onHide())
     }
 
     return (
@@ -56,17 +58,17 @@ const CreateDevice = observer(({show, onHide}) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить новый бренд товара
+                    Добавить новый год выпуска статей
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Dropdown className="mt-2">
-                        <Dropdown.Toggle>{device.selectedType.name || "Выберите тип"}</Dropdown.Toggle>
+                        <Dropdown.Toggle>{article.selectedType.name || "Выберите тип статьи"}</Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {device.types.map(type =>
+                            {article.types.map(type =>
                                 <Dropdown.Item
-                                    onClick={() => device.setSelectedType(type)}
+                                    onClick={() => article.setSelectedType(type)}
                                     key={type.id}
                                 >{type.name}
                                 </Dropdown.Item>
@@ -74,13 +76,13 @@ const CreateDevice = observer(({show, onHide}) => {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown className="mt-2">
-                        <Dropdown.Toggle>{device.selectedBrand.name || "Выберите бренд"}</Dropdown.Toggle>
+                        <Dropdown.Toggle>{article.selectedYear.name || "Выберите год статьи"}</Dropdown.Toggle>
                         <Dropdown.Menu>
-                            {device.brands.map(brand =>
+                            {article.years.map(year =>
                                 <Dropdown.Item
-                                    onClick={() => device.setSelectedBrand(brand)}
-                                    key={brand.id}
-                                >{brand.name}
+                                    onClick={() => article.setSelectedYear(year)}
+                                    key={year.id}
+                                >{year.name}
                                 </Dropdown.Item>
                             )}
                         </Dropdown.Menu>
@@ -89,14 +91,19 @@ const CreateDevice = observer(({show, onHide}) => {
                         value={name}
                         onChange={e => setName(e.target.value)}
                         className="mt-2"
-                        placeholder="Введите название устройства"
+                        placeholder="Введите название статьи"
                     />
                     <Form.Control
-                        value={price}
-                        onChange={e =>setPrice(Number(e.target.value))}
+                        value={author}
+                        onChange={e => setAuthor(e.target.value)}
                         className="mt-2"
-                        placeholder="Введите стоимость устройства"
-                        type="number"
+                        placeholder="Введите автора статьи"
+                    />
+                    <Form.Control
+                        value={text}
+                        onChange={e => setText(e.target.value)}
+                        className="mt-2"
+                        placeholder="Введите текст аннотации"
                     />
                     <Form.Control
                         className="mt-2"
@@ -147,4 +154,4 @@ const CreateDevice = observer(({show, onHide}) => {
     );
 });
 
-export default CreateDevice;
+export default CreateArticle;

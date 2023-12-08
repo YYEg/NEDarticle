@@ -1,9 +1,11 @@
 import React, {useContext} from 'react';
 import {Context} from "../index";
-import {Button, Container, Nav, Navbar} from "react-bootstrap";
+import {Button, Container, Image, Nav, Navbar} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import {useNavigate} from "react-router-dom"
-import {ADMIN_ROUTE, CART_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {ADMIN_ROUTE, LIB_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import ratingStar from "../assets/ratingStar.png";
+import elogo from "../assets/elogo.png"
 
 const NavBar = observer(() => {
     const navigate = useNavigate()
@@ -14,27 +16,22 @@ const NavBar = observer(() => {
         user.setIsAuth(false)
     }
     return (
-        <Navbar bg="dark" data-bs-theme="dark">
+        <Navbar bg="light" data-bs-theme="light">
             <Container>
-                <Nav.Link style={{color:'white'}} href={'/'}>Электрон</Nav.Link>
+                <Nav.Link style={{color:'white'}} href={'/'}>
+                    <Image width={108} height={40} src={elogo}/>
+                </Nav.Link>
                 {user.isAuth ?
-                    <Nav className="ml-auto" style={{color: 'white'}}>
+                    <Nav style={{color: 'white'}}>
                         <Button
-                            variant={"outline-light"}
-                            className="m-lg-1"
-                            onClick={() => navigate(CART_ROUTE)}
-                        >
-                            Корзина
-                        </Button>
-                        <Button
-                            variant={"outline-light"}
+                            variant={"outline-primary"}
                             className="m-lg-1"
                             onClick={() => navigate(ADMIN_ROUTE)}
                         >
                             Админ панель
                         </Button>
                         <Button
-                            variant={"outline-light"}
+                            variant={"outline-primary"}
                             className="m-lg-1"
                             onClick={() => logOut()}
                         >
@@ -42,8 +39,8 @@ const NavBar = observer(() => {
                         </Button>
                     </Nav>
                     :
-                    <Nav className="ml-auto" style={{color: 'white'}}>
-                        <Button variant={"outline-light"} onClick={() => navigate(LOGIN_ROUTE)}>Авторизация</Button>
+                    <Nav style={{color: 'white'}}>
+                        <Button variant={"outline-primary"} onClick={() => navigate(LOGIN_ROUTE)}>Авторизация</Button>
                     </Nav>
                 }
             </Container>

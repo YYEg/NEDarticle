@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-import {createBrand, createType} from "../../http/DeviceAPI";
+import {createYear, createType} from "../../http/ArticleAPI";
 
 const CreateType = ({show, onHide}) => {
     const [value, setValue] = useState()
     const addBrand = () => {
-        createBrand({name: value}).then(data => {
+        createYear({name: value}).then(data => {
             setValue('')
             onHide()
         })
@@ -19,7 +19,7 @@ const CreateType = ({show, onHide}) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить новый бренд товара
+                    Добавить новый год выпуска статей
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -27,7 +27,7 @@ const CreateType = ({show, onHide}) => {
                     <Form.Control
                         value={value}
                         onChange={e => setValue(e.target.value)}
-                        placeholder={"Введите название бренда"}
+                        placeholder={"Введите год выпуска"}
                     />
                 </Form>
             </Modal.Body>

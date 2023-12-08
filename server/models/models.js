@@ -8,19 +8,19 @@ const User = sequelize.define('user', {
     role: {type: DataTypes.STRING, defaultValue: "USER"},
 })
 
-const Cart = sequelize.define('cart', {
+const Library = sequelize.define('library', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
 
-const CartDevice = sequelize.define('cart_device', {
+const LibraryArticle = sequelize.define('library_article', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
 
-const Device = sequelize.define('device', {
+const Article = sequelize.define('article', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
-    price: {type: DataTypes.INTEGER, allowNull: false},
-    rating: {type: DataTypes.INTEGER, defaultValue: 0},
+    author: {type: DataTypes.STRING, allowNull: false},
+    text: {type: DataTypes.TEXT, allowNull: true},
     img: {type: DataTypes.STRING, allowNull: false},
 })
 
@@ -29,61 +29,49 @@ const Type = sequelize.define('type', {
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
 })
 
-const Brand = sequelize.define('brand', {
+const Year = sequelize.define('year', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
 })
 
-const Rating = sequelize.define('rating', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    rate: {type: DataTypes.INTEGER, allowNull: false},
-})
-
-const DeviceInfo = sequelize.define('device_info', {
+const ArticleInfo = sequelize.define('article_info', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type: DataTypes.STRING, allowNull: false},
     description: {type: DataTypes.STRING, allowNull: false},
 })
 
-const TypeBrand = sequelize.define('type_brand', {
+const TypeYear = sequelize.define('type_year', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
 })
 
-User.hasOne(Cart)
-Cart.belongsTo(User)
+User.hasOne(Library)
+Library.belongsTo(User)
 
-User.hasMany(Rating)
-Rating.belongsTo(User)
+Library.hasMany(LibraryArticle)
+LibraryArticle.belongsTo(User)
 
-Cart.hasMany(CartDevice)
-CartDevice.belongsTo(User)
+Type.hasMany(Article)
+Article.belongsTo(Type)
 
-Type.hasMany(Device)
-Device.belongsTo(Type)
+Year.hasMany(Article)
+Article.belongsTo(Year)
 
-Brand.hasMany(Device)
-Device.belongsTo(Brand)
+Article.hasMany(LibraryArticle)
+LibraryArticle.belongsTo(Article)
 
-Device.hasMany(Rating)
-Rating.belongsTo(Device)
+Article.hasMany(ArticleInfo, {as: 'info'})
+ArticleInfo.belongsTo(Article)
 
-Device.hasMany(CartDevice)
-CartDevice.belongsTo(Device)
-
-Device.hasMany(DeviceInfo, {as: 'info'})
-DeviceInfo.belongsTo(Device)
-
-Type.belongsToMany(Brand, {through: TypeBrand})
-Brand.belongsToMany(Type, {through: TypeBrand})
+Type.belongsToMany(Year, {through: TypeYear})
+Year.belongsToMany(Type, {through: TypeYear})
 
 module.exports = {
     User,
-    Cart,
-    CartDevice,
-    Device,
+    Library: Library,
+    CartDevice: LibraryArticle,
+    Article: Article,
     Type,
-    Brand,
-    Rating,
-    TypeBrand,
-    DeviceInfo
+    Year: Year,
+    TypeBrand: TypeYear,
+    ArticleInfo: ArticleInfo
 }

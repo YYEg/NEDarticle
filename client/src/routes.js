@@ -1,16 +1,16 @@
 import Admin from "./page/Admin";
-import Cart from "./page/Cart";
-import Shop from "./page/Shop";
+import Library from "./page/Library";
+import Catalog from "./page/Catalog";
 import Auth from "./page/Auth";
-import DevicePage from "./page/DevicePage";
+import ArticlePage from "./page/ArticlePage";
 
 import {
     ADMIN_ROUTE,
-    CART_ROUTE,
-    DEVICE_ROUTE,
+    LIB_ROUTE,
+    ARTICLE_ROUTE,
     LOGIN_ROUTE,
     REGISTRATION_ROUTE,
-    SHOP_ROUTE
+    CATALOG_ROUTE
 } from "./utils/consts";
 
 
@@ -20,15 +20,15 @@ export const authRoutes = [
         Component: Admin
     },
     {
-        path: CART_ROUTE,
-        Component: Cart
+        path: LIB_ROUTE,
+        Component: Library
     }
 ]
 
 export const publicRoutes = [
     {
-        path: SHOP_ROUTE,
-        Component: Shop
+        path: CATALOG_ROUTE,
+        Component: Catalog
     },
     {
         path: LOGIN_ROUTE,
@@ -39,11 +39,11 @@ export const publicRoutes = [
         Component: Auth
     },
     {
-        path: DEVICE_ROUTE + '/:id',
-        Component: DevicePage
+        path: ARTICLE_ROUTE + '/:id',
+        Component: ArticlePage
     },
     {
-        path: CART_ROUTE,
-        Component: Cart
+        path: LIB_ROUTE,
+        Component: Library
     }
 ]

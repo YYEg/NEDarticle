@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import {authRoutes, publicRoutes} from '../routes';
-import {SHOP_ROUTE} from "../utils/consts";
+import {CATALOG_ROUTE} from "../utils/consts";
 import {Context} from "../index";
 
 const AppRouter = () => {
@@ -16,7 +16,7 @@ const AppRouter = () => {
             {publicRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={<Component />} />
             )}
-            <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
+            <Route path="*" element={<Navigate to={CATALOG_ROUTE} />} />
         </Routes>
     );
 };

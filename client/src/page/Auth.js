@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import { Button, Card, Container, Form } from "react-bootstrap";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
-import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {LOGIN_ROUTE, REGISTRATION_ROUTE, CATALOG_ROUTE} from "../utils/consts";
 import Row from "react-bootstrap/Row";
 import {login, registration} from "../http/userAPI";
 import {observer} from "mobx-react-lite";
@@ -25,7 +25,7 @@ const Auth = observer(() => {
             }
             user.setUser(user)
             user.setIsAuth(true)
-            navigate(SHOP_ROUTE)
+            navigate(CATALOG_ROUTE)
         } catch (e) {
             if (e.response) {
                 // The request was made and the server responded with a status code
