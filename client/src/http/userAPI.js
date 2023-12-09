@@ -17,6 +17,18 @@ export const checkAdmin = async () => {
         return false; // Return false in the case of an error
     }
 };
+
+export const reciveUserName = async () => {
+    try {
+        const { data } = await $authHost.get('api/user/username');
+        console.log(data)
+        return data; // Assuming the email property is available in the response data
+    } catch (error) {
+        console.error('Error fetching username:', error);
+        return ''; // Return an empty string or handle the error appropriately
+    }
+};
+
 export  const login = async (email, password) => {
     const {data} = await $host.post('api/user/login', {email, password})
     localStorage.setItem('token', data.token)

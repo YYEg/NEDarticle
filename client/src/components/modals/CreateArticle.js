@@ -6,9 +6,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {createArticle, fetchYear, fetchArticle, fetchType} from "../../http/ArticleAPI";
 import {observer} from "mobx-react-lite";
+import {reciveUserName} from "../../http/userAPI";
 
 const CreateArticle = observer(({show, onHide}) => {
     const {article} = useContext(Context)
+    const {user} = useContext(Context)
 
     const [name, setName] = useState('')
     const [author, setAuthor] = useState('')
@@ -20,6 +22,19 @@ const CreateArticle = observer(({show, onHide}) => {
         fetchType().then(data => article.setTypes(data))
         fetchYear().then(data => article.setYears(data))
     }, [])
+
+    useEffect(() => {
+        const fetchUserName = async () => {
+            try {
+                const aName = await reciveUserName();  // Await the promise to get the username
+                setAuthor(aName);  // Set the retrieved username as the author
+            } catch (error) {
+                console.error('Error fetching username:', error);
+                // Handle the error if the username retrieval fails
+            }
+        }
+        fetchUserName();  // Call the async function to fetch and set the author
+    }, []);
 
     const addInfo = () => {
         setInfo([...info, {title: '', description: '', number: Date.now()}])
@@ -37,6 +52,11 @@ const CreateArticle = observer(({show, onHide}) => {
         setFile(e.target.files[0])
     }
 
+    useEffect(() => {
+        setAuthor(reciveUserName)
+
+    }, [])
+
     const addDevice = () => {
         const formData = new FormData()
         formData.append('name', name)
@@ -48,6 +68,7 @@ const CreateArticle = observer(({show, onHide}) => {
         formData.append('info', JSON.stringify(info))
         createArticle(formData).then(data => onHide())
     }
+
 
     return (
         <Modal
@@ -92,12 +113,6 @@ const CreateArticle = observer(({show, onHide}) => {
                         onChange={e => setName(e.target.value)}
                         className="mt-2"
                         placeholder="Введите название статьи"
-                    />
-                    <Form.Control
-                        value={author}
-                        onChange={e => setAuthor(e.target.value)}
-                        className="mt-2"
-                        placeholder="Введите автора статьи"
                     />
                     <Form.Control
                         value={text}

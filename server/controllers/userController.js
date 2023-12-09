@@ -56,6 +56,19 @@ class UserController {
             res.json({isAdmin: false}); // Return false if the user is not an admin
         }
     }
+
+    async sendName(req, res, next){
+        // Debugging: Log req.user to inspect if user details are available
+
+        if(req.user) {
+            console.log(req.user);
+            const username = req.user.email;
+            console.log(username)
+            return res.json(req.user.email);
+        } else {
+            return next(ApiError.badRequest('User details not found'));
+        }
+    }
 }
 
 module.exports = new UserController()

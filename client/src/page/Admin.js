@@ -5,7 +5,7 @@ import CreateBrand from "../components/modals/CreateYear";
 import CreateArticle from "../components/modals/CreateArticle";
 import { Context } from "../index";
 import Col from "react-bootstrap/Col";
-import {checkAdmin} from "../http/userAPI";
+import {checkAdmin, reciveUserName} from "../http/userAPI";
 import DeleteBrandOrType from "../components/modals/DeleteYearOrType";
 
 
@@ -62,6 +62,20 @@ const Admin = () => {
                     >
                         Добавить год
                     </Button>
+                    <Button
+                        onClick={() => setDeleteYearOrType(true)}
+                        variant="primary"
+                        className="mt-4 p-2"
+                    >
+                        Удалить год или тип
+                    </Button>
+                    <Button
+                        onClick={() => console.log(reciveUserName())}
+                        variant="primary"
+                        className="mt-4 p-2"
+                    >
+                        Удалить год или тип
+                    </Button>
                 </div>
             ) : (
                 <h1 className="text-primary text-xxl-center bg-white mt-3 p-2">Добавьте свою аннотацию нажав на кнопку ниже!</h1>
@@ -73,13 +87,7 @@ const Admin = () => {
             >
                 Добавить аннотацию
             </Button>
-            <Button
-                onClick={() => setDeleteYearOrType(true)}
-                variant="primary"
-                className="mt-4 p-2"
-            >
-                Delete type of brand
-            </Button>
+
             <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)}/>
             <CreateArticle show={deviceVisible} onHide={() => setDeviceVisible(false)}/>
             <CreateType show={typeVisible} onHide={() => setTypeVisible(false)}/>
