@@ -36,3 +36,13 @@ export  const fetchOneArticle = async (id) => {
     const {data} = await $host.get('api/article/' + id)
     return data
 }
+
+export const deleteYear = async (id) => {
+    const {data} = await $authHost({method:'DELETE', url:'api/year/'+id});
+    return data;
+}
+
+export const deleteType = async (id) => {
+    const {data} = await $authHost({method:'DELETE', url:'api/type/'+id});
+    return data;
+}

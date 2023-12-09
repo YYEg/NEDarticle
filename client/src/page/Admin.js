@@ -6,6 +6,8 @@ import CreateArticle from "../components/modals/CreateArticle";
 import { Context } from "../index";
 import Col from "react-bootstrap/Col";
 import {checkAdmin} from "../http/userAPI";
+import DeleteBrandOrType from "../components/modals/DeleteYearOrType";
+
 
 const Admin = () => {
     const [brandVisible, setBrandVisible] = useState(false);
@@ -13,24 +15,34 @@ const Admin = () => {
     const [deviceVisible, setDeviceVisible] = useState(false);
     const { user } = useContext(Context);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [deleteYearOrType, setDeleteYearOrType] = useState(false);
+    const [successMsg, setSuccessMsg] = useState('');
+    const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+
 
     useEffect(() => {
         console.log("Fetching admin status..."); // Add a log statement to indicate the start of the fetch
         const fetchAdminStatus = async () => {
             try {
-                console.log("Before calling checkAdmin");
+
                 const isAdmin = await checkAdmin();
-                console.log("After calling checkAdmin, isAdmin:", isAdmin);
+
                 setIsAdmin(isAdmin);
-                console.log("isAdmin state updated:", isAdmin);
+
             } catch (error) {
-                console.error("Error checking admin status:", error);
+
                 setIsAdmin(true); // Set admin status to false in case of error
             }
         };
 
         fetchAdminStatus();
     }, []);
+
+    const showSuccessMsgFunc = (msg) => {
+        setSuccessMsg(msg);
+        setShowSuccessMsg(true);
+        setTimeout(() => setShowSuccessMsg(false), 5000);
+    }
 
     return (
         <Container className="d-flex flex-column">
@@ -61,9 +73,17 @@ const Admin = () => {
             >
                 Добавить аннотацию
             </Button>
+            <Button
+                onClick={() => setDeleteYearOrType(true)}
+                variant="primary"
+                className="mt-4 p-2"
+            >
+                Delete type of brand
+            </Button>
             <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)}/>
             <CreateArticle show={deviceVisible} onHide={() => setDeviceVisible(false)}/>
             <CreateType show={typeVisible} onHide={() => setTypeVisible(false)}/>
+            <DeleteBrandOrType show={deleteYearOrType} onHide={() => setDeleteYearOrType(false)} showSuccessMsgFunc={showSuccessMsgFunc}/>
         </Container>
     );
 };
