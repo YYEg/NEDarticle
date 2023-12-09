@@ -7,7 +7,7 @@ import {ADMIN_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
 
 
-const DevicePageEdit = observer(() => {
+const ArticlePageEdit = observer(() => {
     const {article} = useContext(Context);
     const {id} = useParams();
     const [articleCurr, setArticleCurr] = useState({});
@@ -21,11 +21,12 @@ const DevicePageEdit = observer(() => {
     const [img, setImg] = useState("");
     const [imgFile, setImgFile] = useState(null);
     const [info, setInfo] = useState([]);
+    const [text, setText] = useState("");
 
     const [isDisabledPutBtn, setDisabledPutBtn] = useState(true);
     const navigate = useNavigate()
 
-    const deleteDevice = () => {
+    const deleteArticle = () => {
         fetchDeleteArticle(id).then(() => {
             navigate(ADMIN_ROUTE); // Use navigate directly inside the function
         });
@@ -59,13 +60,14 @@ const DevicePageEdit = observer(() => {
         setInfo(info.map(i => i.id === number ? {...i, [key]: value} : i));
     };
 
-    const putDevice = () => {
+    const putArticle = () => {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('author', author);
-        formData.append('img', imgFile);
-        formData.append('yearId', selectYear.id);
-        formData.append('typeId', selectType.id);
+        formData.append('img', articleCurr.img);
+        formData.append('text', text)
+        formData.append('yearId', articleCurr.yearId);
+        formData.append('typeId', articleCurr.typeId);
         formData.append('info', JSON.stringify(info));
         updateArticles(id, formData).then(data => {
             setShowMsg(true);
@@ -97,17 +99,13 @@ const DevicePageEdit = observer(() => {
         if (
             articleCurr &&
             articleCurr.year &&
-            articleCurr.type &&
-            selectYear &&
-            selectType
+            articleCurr.type
+
         ) {
             if (
-                articleCurr.year.name !== selectYear.name ||
-                articleCurr.type.name !== selectType.name ||
                 articleCurr.name !== name ||
                 articleCurr.author !== author ||
-                checkInfoVal ||
-                img
+                checkInfoVal
 
             ) {
                 setDisabledPutBtn(false);
@@ -116,7 +114,7 @@ const DevicePageEdit = observer(() => {
                 setDisabledPutBtn(true);
             }
         }
-    }, [name, selectYear, selectType, author, img, info]);
+    }, [name, author, text, info]);
 
     useEffect(() => {
         fetchOneArticle(id).then(data => {
@@ -124,6 +122,7 @@ const DevicePageEdit = observer(() => {
             setSelectYear(data.year);
             setSelectType(data.type);
             setName(data.name);
+            setText(data.text);
             setAuthor(data.author);
             setInfo(data.info)
         });
@@ -145,8 +144,8 @@ const DevicePageEdit = observer(() => {
 
                     {/*Name*/}
                     <Row>
-                        <Col xs={1} className="d-flex align-items-center">
-                            Name:
+                        <Col xs={1} className="d-flex align-items-center text-white">
+                            Название:
                         </Col>
                         <Col xs={8}>
                             <Form.Control
@@ -159,10 +158,26 @@ const DevicePageEdit = observer(() => {
                             {name.length === 0 && <b style={{color: "red"}}>Введите название аннотации пожалуйста</b>}
                         </Col>
                     </Row>
+                    {/*Text*/}
+                    <Row>
+                        <Col xs={1} className="d-flex align-items-center text-white">
+                            Текст:
+                        </Col>
+                        <Col xs={8}>
+                            <Form.Control
+                                type="text"
+                                value={text}
+                                onChange={e => setText(e.target.value)}
+                            />
+                        </Col>
+                        <Col xs={3} className="d-flex align-items-center">
+                            {text.length === 0 && <b style={{color: "red"}}>Введите название аннотации пожалуйста</b>}
+                        </Col>
+                    </Row>
                     {/*Name*/}
                     <Row className="mt-2">
-                        <Col xs={1} className="d-flex align-items-center">
-                            Price:
+                        <Col xs={1} className="d-flex align-items-center text-white">
+                            Автор:
                         </Col>
                         <Col xs={8}>
                             <Form.Control
@@ -216,7 +231,7 @@ const DevicePageEdit = observer(() => {
 
                     <Row className="mt-5">
                         <Col xs={12}>
-                            {isDisabledPutBtn ? <Button disabled>Обновить аннотацию</Button> : <Button onClick={putDevice}>Обновить аннотацию</Button>}
+                            {isDisabledPutBtn ? <Button onClick={putArticle}>Обновить аннотацию</Button> : <Button onClick={putArticle}>Обновить аннотацию</Button>}
                             <Button className="ml-5" variant="danger" onClick={handleShow}>Удалить аннотацию</Button>
                         </Col>
                     </Row>
@@ -231,7 +246,7 @@ const DevicePageEdit = observer(() => {
                     <Button variant="secondary" onClick={handleClose}>
                         Закрыть
                     </Button>
-                    <Button variant="primary" onClick={deleteDevice}>
+                    <Button variant="primary" onClick={deleteArticle}>
                         Удалить
                     </Button>
                 </Modal.Footer>
@@ -240,5 +255,5 @@ const DevicePageEdit = observer(() => {
     );
 });
 
-export default DevicePageEdit;
+export default ArticlePageEdit;
 

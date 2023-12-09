@@ -89,23 +89,14 @@ class ArticleController {
     async update(req, res) {
         try {
             const { id } = req.params;
-            const { yearId, typeId, name, author, info } = req.body;
+            const {name, author, info, text } = req.body;
 
             await Article.findOne({ where: { id } }).then(async (data) => {
                 if (data) {
                     let newVal = {};
-                    yearId ? (newVal.yearId = yearId) : false;
-                    typeId ? (newVal.typeId = typeId) : false;
                     name ? (newVal.name = name) : false;
                     author ? (newVal.author = author) : false;
-
-                    if (req.files) {
-                        const { img } = req.files;
-                        const type = img.mimetype.split("/")[1];
-                        let fileName = uuid.v4() + `.${type}`;
-                        await img.mv(path.resolve(__dirname, "..", "static", fileName));
-                        newVal.img = fileName;
-                    }
+                    text ? (newVal.text = text) : false;
 
                     if (info) {
                         const parseInfo = JSON.parse(info);

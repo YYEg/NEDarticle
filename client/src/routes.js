@@ -12,7 +12,7 @@ import {
     REGISTRATION_ROUTE,
     CATALOG_ROUTE, DEVICE_EDIT_ROUTE
 } from "./utils/consts";
-import DevicePageEdit from "./page/ArticlePageEdit";
+import ArticlePageEdit from "./page/ArticlePageEdit";
 
 
 export const authRoutes = [
@@ -26,7 +26,7 @@ export const authRoutes = [
     },
     {
         path: DEVICE_EDIT_ROUTE + '/:id',
-        Component: DevicePageEdit
+        Component: ArticlePageEdit
     },
 ]
 
