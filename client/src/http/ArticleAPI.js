@@ -46,3 +46,18 @@ export const deleteType = async (id) => {
     const {data} = await $authHost({method:'DELETE', url:'api/type/'+id});
     return data;
 }
+
+export const fetchDeleteArticle = async (id) => {
+    const {data} = await $authHost({method:'DELETE', url:`api/article/${id}`});
+    return data;
+}
+
+export const updateArticles = async (id, body) => {
+    const {data} = await $authHost({method:'PUT', url:`api/article/${id}`, data: body});
+    return data;
+}
+
+export const getAllArticlesInAdminPage = async (name, page = 1, filter = "All") => {
+    const {data} = await $authHost({method:'GET', url:`api/article/search?page=${page}&name=${name}&filter=${filter}`});
+    return data;
+}

@@ -3,8 +3,9 @@ import {Button, Card, Container, Image} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import elogo from "../assets/elogo.png"
-import {useParams} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import {fetchOneArticle} from "../http/ArticleAPI";
+import {DEVICE_EDIT_ROUTE} from "../utils/consts";
 
 const ArticlePage = () => {
     const [article, setArticle] = useState({info: []})
@@ -18,6 +19,7 @@ const ArticlePage = () => {
             <Row>
                 <Col md={4}>
                     <Image width={300} height={300} src={process.env.REACT_APP_API_URL + article.img}/>
+                    <NavLink to={DEVICE_EDIT_ROUTE + `/${article.id}`}>edit</NavLink>
                 </Col>
                 <Col md={4}>
                     <img src={elogo} alt=""/>
