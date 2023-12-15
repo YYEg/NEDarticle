@@ -14,14 +14,22 @@ const ArticlePageEdit = observer(() => {
     const [showMsg, setShowMsg] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const [selectYear, setSelectYear] = useState({});
-    const [selectType, setSelectType] = useState({});
+
     const [name, setName] = useState("");
     const [author, setAuthor] = useState(0);
     const [img, setImg] = useState("");
     const [imgFile, setImgFile] = useState(null);
     const [info, setInfo] = useState([]);
     const [text, setText] = useState("");
+
+    // Устанавливаем стандартное значение для selectYear
+    const defaultYear = articleCurr?.year?.name || "Не указано";
+    const [selectYear, setSelectYear] = useState({});
+
+// Устанавливаем стандартное значение для selectType
+    const defaultType = articleCurr?.type?.name || "Не указано";
+    const [selectType, setSelectType] = useState({});
+
 
     const [isDisabledPutBtn, setDisabledPutBtn] = useState(true);
     const navigate = useNavigate()
@@ -66,13 +74,21 @@ const ArticlePageEdit = observer(() => {
         formData.append('author', author);
         formData.append('img', articleCurr.img);
         formData.append('text', text)
-        formData.append('yearId', articleCurr.yearId);
-        formData.append('typeId', articleCurr.typeId);
+
+        if (selectYear) {
+            formData.append('yearId', selectYear.id);
+        }
+
+        if (selectType) {
+            formData.append('typeId', selectType.id);
+        }
+
         formData.append('info', JSON.stringify(info));
+
         updateArticles(id, formData).then(data => {
             setShowMsg(true);
             setMsg(data);
-            setTimeout(() => setShowMsg(true), 5000)
+            setTimeout(() => setShowMsg(true), 5000);
         });
     }
 
@@ -103,9 +119,10 @@ const ArticlePageEdit = observer(() => {
 
         ) {
             if (
+                articleCurr.year.name !== selectYear?.name ||
+                articleCurr.type.name !== selectType?.name ||
                 articleCurr.name !== name ||
-                articleCurr.author !== author ||
-                checkInfoVal
+                articleCurr.author !== author
 
             ) {
                 setDisabledPutBtn(false);
@@ -114,7 +131,7 @@ const ArticlePageEdit = observer(() => {
                 setDisabledPutBtn(true);
             }
         }
-    }, [name, author, text, info]);
+    }, [name, author, text, info, selectType, selectYear]);
 
     useEffect(() => {
         fetchOneArticle(id).then(data => {
@@ -141,6 +158,65 @@ const ArticlePageEdit = observer(() => {
                         </Col>
                     </Row>
                     {/*Year*/}
+                    <Row>
+                        <Col xs={1} className="d-flex align-items-center text-white">
+                            Год:
+                        </Col>
+                        <Col xs={11}>
+                            <Dropdown className="mt-2 mb-2">
+                                <Dropdown.Toggle>{selectYear?.name || defaultYear}</Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {article.years.map(year => {
+                                        return year.name === selectYear?.name ?
+                                            <Dropdown.Item
+                                                key={year.id}
+                                                disabled
+                                            >
+                                                {year.name}
+                                            </Dropdown.Item>
+                                            :
+                                            <Dropdown.Item
+                                                key={year.id}
+                                                onClick={() => setSelectYear(year)}
+                                            >
+                                                {year.name}
+                                            </Dropdown.Item>
+
+                                    })}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Col>
+                    </Row>
+                    {/*Type*/}
+                    <Row>
+                        <Col xs={1} className="d-flex align-items-center text-white">
+                            Тип:
+                        </Col>
+                        <Col xs={11}>
+                            <Dropdown className="mt-2 mb-2">
+                                <Dropdown.Toggle>{selectType?.name || defaultType}</Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {article.types.map(type => {
+                                        return type.name === selectType?.name ?
+                                            <Dropdown.Item
+                                                key={type.id}
+                                                disabled
+                                            >
+                                                {type.name}
+                                            </Dropdown.Item>
+                                            :
+                                            <Dropdown.Item
+                                                key={type.id}
+                                                onClick={() => setSelectType(type)}
+                                            >
+                                                {type.name}
+                                            </Dropdown.Item>
+
+                                    })}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Col>
+                    </Row>
 
                     {/*Name*/}
                     <Row>
@@ -190,50 +266,16 @@ const ArticlePageEdit = observer(() => {
                         </Col>
                     </Row>
 
-                    {/*Characteristics*/}
-                    <Row className="d-flex flex-column m-3">
-                        <h4 className="text-white">Дополнительные характеристики</h4>
-                        <Button
-                            variant="success"
-                            onClick={() => addInfo()}
-                        >
-                            Добавить новую
-                        </Button>
-                        {info.map((item, index) =>
-                            <Row key={index} className="mt-3">
-                                <Col md={4}>
-                                    <Form.Control
-                                        placeholder="Название характиристики"
-                                        value={item.title}
-                                        onChange={e => changeInfo('title', e.target.value, item.id)}
-                                    />
-                                    {!info[index].title &&  <b style={{color: "red"}}>Please input name</b>}
-                                </Col>
-                                <Col md={4}>
-                                    <Form.Control
-                                        placeholder="Описание характеристики"
-                                        value={item.description}
-                                        onChange={e => changeInfo('description', e.target.value, item.id)}
-                                    />
-                                    {!info[index].description &&  <b style={{color: "red"}}>Please input description</b>}
-                                </Col>
-                                <Col md={4}>
-                                    <Button
-                                        variant="outline-danger"
-                                        onClick={() => deleteInfo(item.number)}
-                                    >
-                                        Удалить новую характеристику
-                                    </Button>
-                                </Col>
-                            </Row>
-                        )}
-                    </Row>
-
                     <Row className="mt-5">
                         <Col xs={12}>
-                            {isDisabledPutBtn ? <Button onClick={putArticle}>Обновить аннотацию</Button> : <Button onClick={putArticle}>Обновить аннотацию</Button>}
+                            {isDisabledPutBtn ?
+                                <Button onClick={putArticle}>Обновить аннотацию</Button>
+                                :
+                                <Button onClick={putArticle}>Обновить аннотацию</Button>
+                            }
                             <Button className="ml-5" variant="danger" onClick={handleShow}>Удалить аннотацию</Button>
                         </Col>
+                        {showMsg && <Col xs={12} className="mt-3" style={{color: "white", fontSize: "32px"}}>{msg}</Col>}
                     </Row>
                 </Col>
             </Row>

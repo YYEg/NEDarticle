@@ -26,12 +26,12 @@ const Article = sequelize.define('article', {
 
 const Type = sequelize.define('type', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false, defaultValue: "не задано"},
 })
 
 const Year = sequelize.define('year', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+    name: {type: DataTypes.STRING, unique: true, allowNull: false,   defaultValue: "не задано"},
 })
 
 const ArticleInfo = sequelize.define('article_info', {

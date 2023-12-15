@@ -124,6 +124,7 @@ const CreateArticle = observer(({show, onHide}) => {
                         className="mt-2"
                         placeholder="Выберите файл"
                         type="file"
+                        accept=".jpg"
                         onChange={selectFile}
                     />
                     <hr/>

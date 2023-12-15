@@ -89,11 +89,13 @@ class ArticleController {
     async update(req, res) {
         try {
             const { id } = req.params;
-            const {name, author, info, text } = req.body;
+            const {name, author, info, text, typeId, yearId } = req.body;
 
             await Article.findOne({ where: { id } }).then(async (data) => {
                 if (data) {
                     let newVal = {};
+                    yearId ? newVal.yearId = yearId : false;
+                    typeId ? newVal.typeId = typeId : false;
                     name ? (newVal.name = name) : false;
                     author ? (newVal.author = author) : false;
                     text ? (newVal.text = text) : false;

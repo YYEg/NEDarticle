@@ -28,7 +28,7 @@ const NavBar = observer(() => {
                             className="m-lg-1"
                             onClick={() => navigate(ADMIN_ROUTE)}
                         >
-                            Админ панель
+                            Добавить статью
                         </Button>
                         <Button
                             variant={"outline-primary"}

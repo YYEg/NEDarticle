@@ -55,27 +55,23 @@ const ArticlePage = () => {
     return (
         <Container className="mt-3">
             <Row>
+                <Col md={4}>
+                    <Image
+                        width={300}
+                        height={300}
+                        src={process.env.REACT_APP_API_URL + article.img}
+                    />
+                </Col>
                 {isAdmin || isAuthor ? (
                     <Col md={4}>
-                        <Image
-                            width={300}
-                            height={300}
-                            src={process.env.REACT_APP_API_URL + article.img}
-                        />
-                        <NavLink to={DEVICE_EDIT_ROUTE + `/${article.id}`}>edit</NavLink>
+                        <Image src={elogo} alt="" />
+                        <NavLink style={{color:"white", fontSize:"32px", textAlign:"center"}} to={DEVICE_EDIT_ROUTE + `/${article.id}`}>Редактировать</NavLink>
                     </Col>
                 ) : (
                     <Col md={4}>
-                        <Image
-                            width={300}
-                            height={300}
-                            src={process.env.REACT_APP_API_URL + article.img}
-                        />
+                        <Image src={elogo} alt="" />
                     </Col>
                 )}
-                <Col md={4}>
-                    <img src={elogo} alt="" />
-                </Col>
                 <Col md={4}>
                     <Card
                         className="d-flex flex-column align-items-center justify-content-around"
@@ -84,17 +80,6 @@ const ArticlePage = () => {
                         <h3>Автор(ы): {article.author}</h3>
                     </Card>
                 </Col>
-            </Row>
-            <Row className="d-flex flex-column m-3">
-                <h1 className="text-white">Об аннотации:</h1>
-                {article.info.map((info) => (
-                    <Row
-                        key={info.id}
-                        style={{ background: info.id % 2 !== 0 ? 'lightgray' : 'transparent', padding: 10 }}
-                    >
-                        {info.title}: {info.description}
-                    </Row>
-                ))}
             </Row>
             <Row className="d-flex flex-column m-3">
                 <h1 className="text-white">Аннотация:</h1>

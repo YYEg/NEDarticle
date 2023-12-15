@@ -6,8 +6,8 @@ const DeleteBrandOrType = ({show, onHide, showSuccessMsgFunc}) => {
     const [yearOrType, setYearOrType] = useState("Year");
     const [year, setYear] = useState([]);
     const [types, setTypes] = useState([]);
-    const [selectYear, setSelectYear] = useState({name: "A Brand not selected"});
-    const [selectType, setSelectType] = useState({name: "A type not selected"});
+    const [selectYear, setSelectYear] = useState({name: "год не выбран"});
+    const [selectType, setSelectType] = useState({name: "тип не выбран"});
     const [showMsgErr, setShowMsgErr] = useState(false);
     const [msgErr, setMsgErr] = useState('');
 
@@ -17,26 +17,26 @@ const DeleteBrandOrType = ({show, onHide, showSuccessMsgFunc}) => {
     }, []);
 
     const Delete = async () => {
-        if(yearOrType === "Year") {
-            if(selectYear.name !== "A Year not selected") {
+        if(yearOrType === "год") {
+            if(selectYear.name !== "год не выбран") {
                 await deleteYear(selectYear.id).then(data => {
                     showSuccessMsgFunc(data);
                     onHide();
-                    setSelectYear({name: "A Year not selected"});
+                    setSelectYear({name: "год не выбран"});
                 });
             } else {
-                setMsgErr("Please choose Year");
+                setMsgErr("Пожалуйста выберите год");
                 setShowMsgErr(true);
             }
         } else {
-            if(selectType.name !== "A Type not selected") {
+            if(selectType.name !== "тип не выбран") {
                 await deleteType(selectType.id).then(data => {
                     showSuccessMsgFunc(data);
                     onHide();
-                    setSelectType({name: "A type not selected"});
+                    setSelectType({name: "тип не выбран"});
                 });
             } else {
-                setMsgErr("Please choose Type");
+                setMsgErr("Пожалуста укажите тип аннотации");
                 setShowMsgErr(true);
             }
         }
@@ -70,12 +70,12 @@ const DeleteBrandOrType = ({show, onHide, showSuccessMsgFunc}) => {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        {yearOrType === "Year" ? <Dropdown.Item disabled>Year</Dropdown.Item> : <Dropdown.Item onClick={() => setYearOrType("Year")}>Year</Dropdown.Item>}
-                        {yearOrType === "Type" ? <Dropdown.Item disabled>Type</Dropdown.Item> : <Dropdown.Item onClick={() => setYearOrType("Type")}>Type</Dropdown.Item>}
+                        {yearOrType === "Year" ? <Dropdown.Item disabled>Year</Dropdown.Item> : <Dropdown.Item onClick={() => setYearOrType("Year")}>Год</Dropdown.Item>}
+                        {yearOrType === "Type" ? <Dropdown.Item disabled>Type</Dropdown.Item> : <Dropdown.Item onClick={() => setYearOrType("Type")}>Тип</Dropdown.Item>}
                     </Dropdown.Menu>
                 </Dropdown>
 
-                Choose item of {yearOrType === "Year" ? "Year" : "Type"}
+                Choose item of {yearOrType === "Год" ? "Год" : "Год"}
                 <Dropdown className="mb-3" style={{margin: "0 auto"}}>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
                         {yearOrType === "Year" ? selectYear.name : selectType.name}
@@ -98,8 +98,8 @@ const DeleteBrandOrType = ({show, onHide, showSuccessMsgFunc}) => {
 
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="outline-danger" onClick={onHide}>Close</Button>
-                <Button variant="outline-success" onClick={Delete}>Delete</Button>
+                <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
+                <Button variant="outline-success" onClick={Delete}>Удалить</Button>
             </Modal.Footer>
         </Modal>
     );
