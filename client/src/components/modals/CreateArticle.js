@@ -1,74 +1,72 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Dropdown, Form, Modal} from "react-bootstrap";
-import {useContext} from "react";
-import {Context} from "../../index";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import {createArticle, fetchYear, fetchArticle, fetchType} from "../../http/ArticleAPI";
-import {observer} from "mobx-react-lite";
+import React, { useEffect, useState } from 'react';
+import { Button, Dropdown, Form, Modal, Row, Col } from "react-bootstrap";
+import { useContext } from "react";
+import { Context } from "../../index";
+import { createArticle, fetchYear, fetchArticle, fetchType } from "../../http/ArticleAPI";
+import { observer } from "mobx-react-lite";
 import {reciveUserName} from "../../http/userAPI";
 
-const CreateArticle = observer(({show, onHide}) => {
-    const {article} = useContext(Context)
-    const {user} = useContext(Context)
+const CreateArticle = observer(({ show, onHide }) => {
+    const { article } = useContext(Context);
 
-    const [name, setName] = useState('')
-    const [author, setAuthor] = useState('')
-    const [text, setText] = useState('')
-    const [file, setFile] = useState(null)
-    const [info, setInfo] = useState([])
+    const [name, setName] = useState('');
+    const [author, setAuthor] = useState('');
+    const [text, setText] = useState('');
+    const [file, setFile] = useState(null);
+    const [info, setInfo] = useState([]);
 
     useEffect(() => {
-        fetchType().then(data => article.setTypes(data))
-        fetchYear().then(data => article.setYears(data))
-    }, [])
+        fetchType().then(data => article.setTypes(data));
+        fetchYear().then(data => article.setYears(data));
+    }, []);
 
     useEffect(() => {
         const fetchUserName = async () => {
             try {
-                const aName = await reciveUserName();  // Await the promise to get the username
-                setAuthor(aName);  // Set the retrieved username as the author
+                const aName = await reciveUserName();
+                setAuthor(aName);
             } catch (error) {
                 console.error('Error fetching username:', error);
-                // Handle the error if the username retrieval fails
             }
         }
-        fetchUserName();  // Call the async function to fetch and set the author
+        fetchUserName();
     }, []);
 
     const addInfo = () => {
-        setInfo([...info, {title: '', description: '', number: Date.now()}])
+        setInfo([...info, { title: '', description: '', number: Date.now() }]);
     }
 
     const removeInfo = (number) => {
-        setInfo(info.filter(i => i.number !== number))
+        setInfo(info.filter(i => i.number !== number));
     }
 
     const changeInfo = (key, value, number) => {
-        setInfo(info.map(i => i.number === number ? {...i, [key]: value} : i))
+        setInfo(info.map(i => i.number === number ? { ...i, [key]: value } : i));
     }
 
     const selectFile = e => {
-        setFile(e.target.files[0])
+        setFile(e.target.files[0]);
     }
 
-    useEffect(() => {
-        setAuthor(reciveUserName)
-
-    }, [])
-
-    const addDevice = () => {
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('author', author)
-        formData.append('img', file)
-        formData.append('text', text)
-        formData.append('yearId', article.selectedYear.id)
-        formData.append('typeId', article.selectedType.id)
-        formData.append('info', JSON.stringify(info))
-        createArticle(formData).then(data => onHide())
+    const validateFields = () => {
+        return name && author && text && file && article.selectedYear && article.selectedType;
     }
 
+    const addArticle = () => {
+        if (validateFields()) {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('author', author);
+            formData.append('img', file);
+            formData.append('text', text);
+            formData.append('yearId', article.selectedYear.id);
+            formData.append('typeId', article.selectedType.id);
+            if (info.length > 0) {
+                formData.append('info', JSON.stringify(info));
+            }
+            createArticle(formData).then(() => onHide());
+        }
+    }
 
     return (
         <Modal
@@ -78,9 +76,7 @@ const CreateArticle = observer(({show, onHide}) => {
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Добавить новый год выпуска статей
-                </Modal.Title>
+                <Modal.Title>Добавить новый год выпуска статей</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
@@ -151,12 +147,12 @@ const CreateArticle = observer(({show, onHide}) => {
                                 />
                             </Col>
                             <Col md={4}>
-                               <Button
-                                   variant={"outline-danger"}
-                                   onClick={() => removeInfo(i.number)}
-                               >
-                                   Удалить
-                               </Button>
+                                <Button
+                                    variant={"outline-danger"}
+                                    onClick={() => removeInfo(i.number)}
+                                >
+                                    Удалить
+                                </Button>
                             </Col>
                         </Row>
                     )}
@@ -164,7 +160,7 @@ const CreateArticle = observer(({show, onHide}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-                <Button variant="outline-success" onClick={addDevice}>Добавить</Button>
+                <Button variant="outline-success" onClick={addArticle} disabled={!validateFields()}>Добавить</Button>
             </Modal.Footer>
         </Modal>
     );
