@@ -17,7 +17,7 @@ const DeleteBrandOrType = ({show, onHide, showSuccessMsgFunc}) => {
     }, []);
 
     const Delete = async () => {
-        if(yearOrType === "год") {
+        if(yearOrType === "Year") {
             if(selectYear.name !== "год не выбран") {
                 await deleteYear(selectYear.id).then(data => {
                     showSuccessMsgFunc(data);
