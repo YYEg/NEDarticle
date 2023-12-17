@@ -23,11 +23,11 @@ const ArticlePageEdit = observer(() => {
     const [text, setText] = useState("");
 
     // Устанавливаем стандартное значение для selectYear
-    const defaultYear = articleCurr?.year?.name || "Не указано";
+
     const [selectYear, setSelectYear] = useState({});
 
 // Устанавливаем стандартное значение для selectType
-    const defaultType = articleCurr?.type?.name || "Не указано";
+
     const [selectType, setSelectType] = useState({});
 
 
@@ -145,6 +145,14 @@ const ArticlePageEdit = observer(() => {
         });
     }, [id]);
 
+    useEffect(() => {
+        if (name.trim() === '' || text.trim() === '' || author === 0) {
+            setDisabledPutBtn(true);
+        } else {
+            setDisabledPutBtn(false);
+        }
+    }, [name, text, author]);
+
     return (
         <Container className="mt-3">
             <Row>
@@ -164,7 +172,7 @@ const ArticlePageEdit = observer(() => {
                         </Col>
                         <Col xs={11}>
                             <Dropdown className="mt-2 mb-2">
-                                <Dropdown.Toggle>{selectYear?.name || defaultYear}</Dropdown.Toggle>
+                                <Dropdown.Toggle>{selectYear?.name || "выберите год"}</Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     {article.years.map(year => {
                                         return year.name === selectYear?.name ?
@@ -194,7 +202,7 @@ const ArticlePageEdit = observer(() => {
                         </Col>
                         <Col xs={11}>
                             <Dropdown className="mt-2 mb-2">
-                                <Dropdown.Toggle>{selectType?.name || defaultType}</Dropdown.Toggle>
+                                <Dropdown.Toggle>{selectType?.name || "выберите тип"}</Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     {article.types.map(type => {
                                         return type.name === selectType?.name ?
@@ -269,9 +277,9 @@ const ArticlePageEdit = observer(() => {
                     <Row className="mt-5">
                         <Col xs={12}>
                             {isDisabledPutBtn ?
-                                <Button onClick={putArticle}>Обновить аннотацию</Button>
+                                <Button onClick={putArticle} disabled={isDisabledPutBtn}>Обновить аннотацию</Button>
                                 :
-                                <Button onClick={putArticle}>Обновить аннотацию</Button>
+                                <Button onClick={putArticle} disabled={isDisabledPutBtn}>Обновить аннотацию</Button>
                             }
                             <Button className="ml-5" variant="danger" onClick={handleShow}>Удалить аннотацию</Button>
                         </Col>
